@@ -1,0 +1,67 @@
+parameters:
+- name: image
+  displayName: Pool Image
+  default: ubuntu-latest
+  values:
+  - windows-latest
+  - ubuntu-latest
+  - macOS-latest
+
+- name: test
+  displayName: Run Tests?
+  type: boolean
+  default: false
+
+- name: Pokemon
+  type: string
+  default: pikachu
+  values:
+    - bulbasaur
+    - charmander
+    - squirtle
+    - pikachu
+    - eevee
+
+trigger:
+  branches:
+    include:
+    - main
+
+stages:
+  - stage: Dex
+    condition: 
+    jobs:
+    - job: build
+      displayName: Build and Test
+      pool: 
+        vmImage: ${{ parameters.image }}
+      steps:
+      - script: echo building $(Build.BuildNumber)
+      - ${{ if eq(parameters.test, true) }}:
+        - script: echo running test file
+        - task: PowerShell@2
+          inputs:
+            targetType: filePath
+            filePath: test.ps1
+    - job: GeneratePokedexEntry
+      displayName: Generate Pokedex Entry
+      pool: 
+        vmImage: ${{ parameters.image }}
+      workspace:
+        clean: all
+      steps:
+        - checkout: self
+          fetchDepth: 1
+        - script: echo "You picked ${{Parameters.Pokemon}}"
+        - task: PowerShell@2
+          inputs:
+            targetType: filePath
+            filePath: CreatePokedexEntry.ps1
+            arguments: -pokemonName ${{ parameters.Pokemon }}
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publish Artifact: Entries'
+          inputs:
+            pathToPublish: Entries
+            publishLocation: Container
+            artifactName: "Entries"
+            targetPath: '$(Pipeline.Workspace)'
