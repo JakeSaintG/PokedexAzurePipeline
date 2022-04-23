@@ -30,7 +30,6 @@ function CreatePokedexEntry {
     $pokemonHabitat = returnHabitat -pokemonSpeciesData $pokemonSpeciesData
     $pokemonAbilities = returnAbilities -pokemonBaseData $pokemonBaseData
     $pokemonDescription = returnDescription -pokemonSpeciesData $pokemonSpeciesData
-    $pokemonDescription = $pokemonDescription.Replace("\n", " ").Replace("\f", " ").Replace("é", "&#233").Replace("", " ").Replace("’", "'")
     $pokemonEvolutionChain = returnEvolutionChain -pokemonEvolutionData $pokemonEvolutionData
     WriteFile -manualScript $manualScript -pokemonName $pokemonName -pokemonImage $pokemonImage -pokemonShinyImage $pokemonShinyImage -pokemonType $pokemonType -pokemonHeight $pokemonHeight -pokemonWeight $pokemonWeight -pokemonColor $pokemonColor -pokemonHabitat $pokemonHabitat -pokemonAbilities $pokemonAbilities -pokemonDescription $pokemonDescription -pokemonEvolutionChain $pokemonEvolutionChain
 }

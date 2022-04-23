@@ -30,6 +30,8 @@ function WriteFile {
     )
 
     $pokemonDisplayName = $TextInfo.ToTitleCase($pokemonName)
+    $pokemonDescription = $pokemonDescription.Replace("\n", " ").Replace("\f", " ").Replace("é", "&eacute").Replace("", " ").Replace("’", "'");
+    $pokemonDescription = $pokemonDescription -replace ('POK.MON', 'Pok&eacutemon') # Necessary for this specific regex replace.
 
     if ($manualScript) {
         if (-not (Test-Path "Entries" -PathType Container)) {
