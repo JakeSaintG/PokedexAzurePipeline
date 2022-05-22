@@ -5,7 +5,6 @@ parameters:
   values:
   - windows-latest
   - ubuntu-latest
-  - macOS-latest
 
 - name: test
   displayName: Run Tests?
