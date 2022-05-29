@@ -17,6 +17,9 @@ function CreatePokedexEntry {
 
     # $getPokemonList = Invoke-RestMethod -uri "https://pokeapi.co/api/v2/pokemon?limit=1283"
     # $fullListOfPokemon = $getPokemonList.results.name
+
+    $pokemonName = returnEditedName -pokemonName $pokemonName
+
     $pokemonBaseData = Invoke-RestMethod -uri "https://pokeapi.co/api/v2/pokemon/$pokemonName"
     $pokemonSpeciesData = Invoke-RestMethod -uri $pokemonBaseData.Species.Url
     $pokemonEvolutionData = Invoke-RestMethod -uri $pokemonSpeciesData.Evolution_Chain.Url    
